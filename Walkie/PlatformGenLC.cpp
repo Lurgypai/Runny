@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "PlatformGenLC.h"
+#include "WalkieLC.h"
 
 PlatformGenLC::PlatformGenLC(msf::GameObject* playerHandle) :
 	patterns{},
@@ -12,7 +13,7 @@ PlatformGenLC::PlatformGenLC(msf::GameObject* playerHandle) :
 //need a way to copy unique ptrs
 PlatformGenLC::PlatformGenLC(const PlatformGenLC& other) : 
 	lastPlat{ other.lastPlat },
-		player{other.player},
+	player{other.player},
 	current{other.current},
 	middle{other.middle},
 	last{other.last} {
@@ -33,11 +34,29 @@ void PlatformGenLC::update() {
 	if (playerX > platx && distance > threshold) {
 
 		last->clearGeneration();
-		last = middle;
+ 		last = middle;
 		middle = current;
 		current = selectPattern();
 		current->generate(middle->getLast());
 		lastPlat = last->getLast();
+	}
+
+	WalkieLC* playerLogic = static_cast<WalkieLC*>(player->getLogic());
+	bool currentSpawn = playerLogic->isSpawning();
+	if (prevSpawn != currentSpawn) {
+		if (currentSpawn) {
+			//clear everything
+			last->clearGeneration();
+			middle->clearGeneration();
+			current->clearGeneration();
+			for (auto & dot : player->getScene()->getGOGroup("dots")) {
+				dot->destroy();
+			}
+
+			//regenerate
+			generateInitial(sf::FloatRect{ { 0,260 },{ 480,10 } });
+		}
+		prevSpawn = currentSpawn;
 	}
 }
 
@@ -64,12 +83,6 @@ PlatformPattern * PlatformGenLC::selectPattern() {
 	while (i == currentId || i == middleId || i == lastId) {
 		i = rand() % size;
 	}
-
-	std::cout << "last: " << lastId << std::endl;
-	std::cout << "middle: " << middleId << std::endl;
-	std::cout << "current: " << currentId << std::endl;
-	std::cout << "new: " << i << std::endl;
-	std::cout << std::endl;
 	lastId = middleId;
 	middleId = currentId;
 	currentId = i;

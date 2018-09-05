@@ -19,7 +19,6 @@ bool SquareCollider::intersects(Collider & other) {
 	return false;
 }
 
-bool SquareCollider::contains(const sf::Vector2f & point)
-{
-	return false;
+bool SquareCollider::contains(const sf::Vector2f & point) {
+	return shape->getBoundingBox().contains(point);
 }

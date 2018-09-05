@@ -4,12 +4,48 @@
 #include "WalkieC.h"
 #include "SquareShape.h"
 #include "SquareCollider.h"
+#include "HbarAction.h"
+#include "WalkieAC.h"
 
-WalkieLC::WalkieLC() : controllerState{ 0 }, state{ free }, rollingCounter{ 0 }, rollingCounterMax{ 40 }, dropCounter{ 0 }, dropCounterMax{ 120 }, jumps{ 0 }, maxJumps{ 2 }, speed{ 1.0 }, dropDelay{ 0 }, dropDelayMax{80} {
+WalkieLC::WalkieLC(msf::Game *game_) :
+	controllerState{ 0 },
+	state{ spawning },
+	rollingCounter{ 0 },
+	rollingCounterMax{ 40 },
+	dropCounter{ 0 },
+	dropCounterMax{ 120 },
+	jumps{ 0 },
+	maxJumps{ 2 },
+	speed{ 1.0 },
+	dropDelay{ 0 },
+	dropDelayMax{ 80 },
+	life{ 1800 },
+	game{ game_ },
+	fallDeathDelay{0},
+	fallDeathDelayMax{240},
+	respawnPos{0,0}
+{
 	setCollider<SquareCollider>(0, 0, 3, 12);
 }
 
-WalkieLC::WalkieLC(const WalkieLC & other) : controllerState{ 0 }, state{ free }, rollingCounter{ 0 }, rollingCounterMax{ 40 }, dropCounter{ 0 }, dropCounterMax{ 120 }, jumps{ 0 }, maxJumps{ 2 }, speed{1.0}, dropDelay{ 0 }, dropDelayMax{ 80 } {
+WalkieLC::WalkieLC(const WalkieLC & other) :
+	controllerState{ 0 },
+	state{ spawning },
+	rollingCounter{ 0 },
+	rollingCounterMax{ 40 },
+	dropCounter{ 0 },
+	dropCounterMax{ 120 },
+	jumps{ 0 },
+	maxJumps{ 2 },
+	speed{ 1.0 },
+	dropDelay{ 0 },
+	dropDelayMax{ 80 },
+	life{ 1800 },
+	game{other.game},
+	fallDeathDelay{ 0 },
+	fallDeathDelayMax{ 240 },
+	respawnPos{0,0}
+{
 	setCollider<SquareCollider>(0, 0, 3, 12);
 }
 
@@ -38,6 +74,7 @@ void WalkieLC::update() {
 		msf::MVector projectVel = velocity;
 
 		//gravity
+		if(state != spawning && state != victory)
 		projectVel += {90, .05};
 
 		if (dropDelay != 0)
@@ -63,7 +100,8 @@ void WalkieLC::update() {
 				jumped = true;
 				break;
 			case WalkieC::downd:
-				if (!onGround && dropDelay == 0) {
+				if (!onGround && dropDelay == 0 && state == free ) {
+					buffer.push_back(new msf::Action{WalkieAC::drop, false});
 					dropDelay = dropDelayMax;
 					state = dropping;
 					projectVel += {90, 3};
@@ -137,18 +175,22 @@ void WalkieLC::update() {
 			if (jumped) {
 				if (onGround) {
 					projectVel.yComp(-2);
+					buffer.push_back(new msf::Action{ WalkieAC::jump, false });
 				}
 				else if (onLWall) {
 					projectVel.yComp(0);
 					projectVel += {-45, 3};
+					buffer.push_back(new msf::Action{ WalkieAC::jump, false });
 				}
 				else if (onRWall) {
 					projectVel.yComp(0);
 					projectVel += {-135, 3};
+					buffer.push_back(new msf::Action{ WalkieAC::jump, false });
 				}
 				else if (!onGround && !onLWall && !onRWall && (jumps != 0)) {
 					jumps--;
 					projectVel.yComp(-2);
+					buffer.push_back(new msf::Action{ WalkieAC::jump, false });
 				}
 			}
 			break;
@@ -182,15 +224,29 @@ void WalkieLC::update() {
 					rollingCounter = 0;
 					state = free;
 					projectVel.yComp(-2);
+					buffer.push_back(new msf::Action{ WalkieAC::jump, false });
 				}
 				else if (jumps != 0) {
 					jumps--;
 					rollingCounter = 0;
 					state = free;
 					projectVel.yComp(-2);
+					buffer.push_back(new msf::Action{ WalkieAC::jump, false });
 				}
 			}
 			break;
+		case spawning:
+			if (spawnFrame != 120) {
+				life = 1800;
+				spawnFrame++;
+			}
+			else {
+				spawnFrame = 0;
+				state = free;
+			}
+			break;
+		case victory:
+			life = 1800;
 		//rolling
 		}
 
@@ -224,67 +280,131 @@ void WalkieLC::update() {
 				if (xMovement == 0) {
 					if (gobj->getLogic()->getCollider()->getShape()->getType() == 0) {
 						SquareShape* otherShape = static_cast<SquareShape*>(gobj->getLogic()->getCollider()->getShape());
-						if (newX + shape->getBoundingBox().width == otherShape->getOrigin().x) {
+						if (newY <= otherShape->getBoundingBox().top + otherShape->getBoundingBox().height) {
+							if (newX + shape->getBoundingBox().width == otherShape->getOrigin().x) {
+								onRWall = true;
+							}
+							else if (newX == otherShape->getOrigin().x + otherShape->getBoundingBox().width) {
+								onLWall = true;
+							}
+						}
+					}
+				}
+			}
+		}
+
+
+		//dots
+		for (auto& gobj : owner->getScene()->getGOGroup("dots")) {
+			if (gobj->getLogic()->getCollider()->intersects(*projection)) {
+				gobj->destroy();
+				life += 120;
+				buffer.push_back(new msf::Action{ WalkieAC::dot, false });
+			}
+		}
+
+		//dots
+		for (auto& gobj : owner->getScene()->getGOGroup("end")) {
+			if (gobj->getLogic()->getCollider()->intersects(*projection)) {
+				gobj->destroy();
+				respawnPos = { 0,0 };
+				spawn();
+				levelComplete = true;
+				buffer.push_back(new msf::Action{ WalkieAC::end, false });
+			}
+		}
+
+		//checkpoint
+		for (auto& gobj : owner->getScene()->getGOGroup("check")) {
+			if (gobj->getLogic()->getCollider()->intersects(*projection)) {
+				gobj->destroy();
+				sf::FloatRect bound = gobj->getLogic()->getCollider()->getShape()->getBoundingBox();
+				//spawn inside check
+				sf::Vector2f pos = { (bound.left + (bound.width / 2)) - 1.5f, (bound.top + (bound.height / 2))  - 10.0f};
+				respawnPos = pos;
+				life += 1800;
+				buffer.push_back(new msf::Action{ WalkieAC::check, false });
+			}
+		}
+
+		//resolve y collisions first, so that we can properly resolve x collisons
+		for (auto gobj = intersectingGobjs.begin(); gobj != intersectingGobjs.end(); gobj++) {
+			if ((*gobj)->getLogic()->getCollider()->getShape()->getType() == 0) {
+				if ((*gobj)->getLogic()->getCollider()->intersects(*projection)) {
+					SquareShape* otherShape = static_cast<SquareShape*>((*gobj)->getLogic()->getCollider()->getShape());
+					//falling
+					if (yMovement > 0) {
+						if (previousY + shape->getBoundingBox().height <= otherShape->getOrigin().y) {
+							onGround = true;
+							jumps = maxJumps;
+							projectVel.yComp(0);
+							newY = (otherShape->getOrigin().y - shape->getBoundingBox().height);
+						}
+					}
+					//jumping
+					if (yMovement < 0) {
+						if (previousY >= otherShape->getOrigin().y + otherShape->getBoundingBox().height) {
+							projectVel.yComp(0);
+							newY = (otherShape->getOrigin().y + otherShape->getBoundingBox().height);
+						}
+					}
+					projection->setOrigin(newX, newY);
+				}
+			}
+		}
+
+		//resolve y collisions first, so that we can properly resolve x collisons
+		for (auto gobj = intersectingGobjs.begin(); gobj != intersectingGobjs.end(); gobj++) {
+			if ((*gobj)->getLogic()->getCollider()->getShape()->getType() == 0) {
+				if ((*gobj)->getLogic()->getCollider()->intersects(*projection)) {
+					SquareShape* otherShape = static_cast<SquareShape*>((*gobj)->getLogic()->getCollider()->getShape());
+
+					//moving right
+					if (xMovement > 0) {
+						//these check if the object was to the left right, above or beneath the wall dummy
+
+						if (previousX + shape->getBoundingBox().width <= otherShape->getOrigin().x) {
 							onRWall = true;
+							if (state == rolling)
+								state = free;
+							projectVel.xComp(0);
+							newX = (otherShape->getOrigin().x - shape->getBoundingBox().width);
 						}
-						else if (newX == otherShape->getOrigin().x + otherShape->getBoundingBox().width) {
+					}
+					//moving left
+					else if (xMovement < 0) {
+						if (previousX >= otherShape->getOrigin().x + otherShape->getBoundingBox().width) {
 							onLWall = true;
+							if (state == rolling)
+								state = free;
+							projectVel.xComp(0);
+							newX = (otherShape->getOrigin().x + otherShape->getBoundingBox().width);
 						}
 					}
+					projection->setOrigin(newX, newY);
 				}
 			}
 		}
-
-
-		for (auto& gobj : intersectingGobjs) {
-			if (gobj->getLogic()->getCollider()->getShape()->getType() == 0) {
-				SquareShape* otherShape = static_cast<SquareShape*>(gobj->getLogic()->getCollider()->getShape());
-
-				//moving right
-				if (xMovement > 0) {
-					if (previousX + shape->getBoundingBox().width <= otherShape->getOrigin().x) {
-						onRWall = true;
-						if (state == rolling)
-							state = free;
-						projectVel.xComp(0);
-						newX = (otherShape->getOrigin().x - shape->getBoundingBox().width);
-					}
-				}
-				//moving left
-				else if (xMovement < 0) {
-					if (previousX >= otherShape->getOrigin().x + otherShape->getBoundingBox().width) {
-						onLWall = true;
-						if (state == rolling)
-							state = free;
- 						projectVel.xComp(0);
-						newX = (otherShape->getOrigin().x + otherShape->getBoundingBox().width);
-					}
-				}
-				//falling
-				if (yMovement > 0) {
-					if (previousY + shape->getBoundingBox().height <= otherShape->getOrigin().y) {
-						onGround = true;
-						jumps = maxJumps;
-						projectVel.yComp(0);
-						newY = (otherShape->getOrigin().y - shape->getBoundingBox().height);
-					}
-				}
-				//jumping
-				if (yMovement < 0) {
-					if (previousY >= otherShape->getOrigin().y + otherShape->getBoundingBox().height) {
-						projectVel.yComp(0);
-						newY = (otherShape->getOrigin().y + otherShape->getBoundingBox().height);
-					}
-				}
-			}
-		}
-
-
 
 		//use velocities and new position
 		velocity = projectVel;
 		owner->setPos(newX, newY);
 
+		//fall death
+		if (fallDeathDelay != fallDeathDelayMax) {
+			//if we are falling, add, else reset
+			if (!onGround && previousY < newY) {
+				fallDeathDelay++;
+			}
+			else {
+				fallDeathDelay = 0;
+			}
+		}
+		else {
+			//respawn, restart counter
+			spawn();
+			fallDeathDelay = 0;
+		}
 
 		//place graphics actions
 		switch (state) {
@@ -317,8 +437,48 @@ void WalkieLC::update() {
 			break;
 		}
 	}
+	if (state != spawning) {
+		life--;
+		if (life == 0) {
+			spawn();
+		}
+		buffer.push_back(new HbarAction{ static_cast<float>(life), WalkieGC::Hbar, false });
+	}
+	else {
+		buffer.push_back(new msf::Action(WalkieGC::Stopped, false));
+		buffer.push_back(new HbarAction{ static_cast<float>(spawnFrame * 15), WalkieGC::Hbar, false });
+	}
 }
 
 std::unique_ptr<msf::LogicComponent> WalkieLC::clone() {
 	return std::make_unique<WalkieLC>(*this);
+}
+
+void WalkieLC::spawn() {
+	state = spawning;
+	levelComplete = false;
+	owner->setPos(respawnPos);
+	velocity = { 0,0 }; 
+}
+
+void WalkieLC::setVictor() {
+	state = victory;
+	levelComplete = false;
+	velocity = { 0,0 };
+}
+
+bool WalkieLC::complete() { 
+	return levelComplete;
+}
+
+bool WalkieLC::isSpawning() {
+	return state == spawning;
+}
+
+bool WalkieLC::isVictor() {
+	return state == victory;
+}
+
+sf::Vector2f WalkieLC::getSpawnPoint() {
+	return respawnPos;
 }

@@ -1,0 +1,16 @@
+level
+dot:      x: 50     y: 4
+dot:      x: 59     y: 4
+dot:      x: 68     y: 4
+dot:      x: 77     y: 4
+dot:      x: 388     y: -55
+dot:      x: 388     y: -170
+dot:      x: 388     y: -110
+dot:      x: 388     y: -140
+dot:      x: 388     y: -81
+end:      x: 609     y: -190
+plat:     x: -14     y: 12     w: 200     h: 10
+plat:     x: 211     y: 12     w: 200     h: 10
+plat:     x: 411     y: -178     w: 10     h: 200
+plat:     x: 358     y: -223     w: 10     h: 200
+plat:     x: 421     y: -178     w: 200     h: 10

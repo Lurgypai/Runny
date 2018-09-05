@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -136,10 +136,15 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\dapop\Desktop\Lurgypai\CPP\SFML-2.4.2\include;C:\Users\dapop\Desktop\Lurgypai\CPP\Projects\MSFSrc\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions> /std:c++latest %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Users\dapop\Desktop\Lurgypai\CPP\SFML-2.4.2\lib;C:\Users\dapop\Desktop\Lurgypai\CPP\Projects\MSFSrc\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-audio-d.lib;sfml-system-d.lib;MSF-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -194,6 +199,8 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>C:\Users\dapop\Desktop\Lurgypai\CPP\Projects\MSFSrc\include;C:\Users\dapop\Desktop\Lurgypai\CPP\SFML-2.4.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions> /std:c++latest %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -201,7 +208,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Users\dapop\Desktop\Lurgypai\CPP\Projects\MSFSrc\lib;C:\Users\dapop\Desktop\Lurgypai\CPP\SFML-2.4.2\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>MSF.lib;sfml-system.lib;sfml-graphics.lib;sfml-window.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>MSF.lib;sfml-system.lib;sfml-graphics.lib;sfml-window.lib;sfml-audio.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MSF|x64'">
@@ -214,6 +221,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>C:\Users\dapop\Desktop\Lurgypai\CPP\Projects\MSFSrc\include;C:\Users\dapop\Desktop\Lurgypai\CPP\SFML-2.4.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions> /std:c++latest %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -226,28 +235,62 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="BuildCamera.h" />
+    <ClInclude Include="BuildModeLogic.h" />
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="AnimationGC.h" />
+    <ClInclude Include="CSound.h" />
+    <ClInclude Include="CustomConsole.h" />
+    <ClInclude Include="CustomConsoleGC.h" />
+    <ClInclude Include="EndGC.h" />
     <ClInclude Include="FlatPattern.h" />
+    <ClInclude Include="HbarAction.h" />
+    <ClInclude Include="SoundSystem.h" />
+    <ClInclude Include="ImageRenderGC.h" />
+    <ClInclude Include="LevelProgressLC.h" />
+    <ClInclude Include="MenuIconLC.h" />
+    <ClInclude Include="PlatformEditableLC.h" />
     <ClInclude Include="PlatformGC.h" />
     <ClInclude Include="PlatformGenLC.h" />
-    <ClInclude Include="PlatformLC.h" />
+    <ClInclude Include="CollideableLC.h" />
     <ClInclude Include="PlatformPattern.h" />
     <ClInclude Include="PlayerCamera.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Resources.h" />
     <ClInclude Include="SquareCollider.h" />
     <ClInclude Include="SquareShape.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="StringUtil.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TextGC.h" />
     <ClInclude Include="VerticalPattern.h" />
+    <ClInclude Include="WalkieAC.h" />
     <ClInclude Include="WalkieGC.h" />
     <ClInclude Include="WalkieC.h" />
     <ClInclude Include="WalkieLC.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="Animation.cpp">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\dapop\Desktop\Lurgypai\CPP\Projects\MSFSrc\include;C:\Users\dapop\Desktop\Lurgypai\CPP\SFML-2.4.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="BuildCamera.cpp" />
+    <ClCompile Include="BuildModeLogic.cpp" />
+    <ClCompile Include="AnimationGC.cpp" />
+    <ClCompile Include="CSound.cpp" />
+    <ClCompile Include="CustomConsole.cpp" />
+    <ClCompile Include="CustomConsoleGC.cpp" />
+    <ClCompile Include="EndGC.cpp" />
     <ClCompile Include="FlatPattern.cpp" />
+    <ClCompile Include="SoundSystem.cpp" />
+    <ClCompile Include="ImageRenderGC.cpp" />
+    <ClCompile Include="LevelProgressLC.cpp" />
+    <ClCompile Include="MenuIconLC.cpp" />
+    <ClCompile Include="PlatformEditableLC.cpp" />
     <ClCompile Include="PlatformGC.cpp" />
     <ClCompile Include="PlatformGenLC.cpp" />
-    <ClCompile Include="PlatformLC.cpp" />
+    <ClCompile Include="CollideableLC.cpp" />
     <ClCompile Include="PlayerCamera.cpp" />
+    <ClCompile Include="Resources.cpp" />
     <ClCompile Include="SquareCollider.cpp" />
     <ClCompile Include="SquareShape.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -258,11 +301,20 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='MSF|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="StringUtil.cpp" />
+    <ClCompile Include="TextGC.cpp" />
     <ClCompile Include="VerticalPattern.cpp" />
     <ClCompile Include="Walkie.cpp" />
+    <ClCompile Include="WalkieAC.cpp" />
     <ClCompile Include="WalkieGC.cpp" />
     <ClCompile Include="WalkieC.cpp" />
     <ClCompile Include="WalkieLC.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Walkie.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon1.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

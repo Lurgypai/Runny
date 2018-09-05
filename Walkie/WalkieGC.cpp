@@ -1,10 +1,13 @@
 #include "stdafx.h"
 #include "WalkieGC.h"
 #include "WalkieC.h"
+#include "HbarAction.h"
 #include <iostream>
 
 WalkieGC::WalkieGC(const Animation& animation_) :
-	animation{animation_} {
+	animation{ animation_ },
+	lbar{ {10, 2} } {
+	lbar.setFillColor(sf::Color::White);
 }
 
 WalkieGC::WalkieGC(const WalkieGC & other) :
@@ -17,9 +20,19 @@ WalkieGC::~WalkieGC() {}
 
 void WalkieGC::update(std::vector<msf::Action *>& acts, sf::RenderWindow & window) {
 	animation.getSprite().setPosition(owner->getPos().x-4, owner->getPos().y - 1);
+	lbar.setPosition(owner->getPos().x - (lbar.getGlobalBounds().width / 2) + 1.5, owner->getPos().y - 5 - (lbar.getGlobalBounds().height / 2));
 	AnimationFlag prevState = state;
-	for (auto& act : acts) {
-		state = static_cast<AnimationFlag>(act->id);
+	for (auto act : acts) {
+		if (static_cast<AnimationFlag>(act->id) == WalkieGC::Hbar) {
+			HbarAction * healthAction = static_cast<HbarAction*>(act);
+			float health = healthAction->health;
+			if (health > 1800)
+				health = 1800;
+			lbar.setSize({ health / 50.0f, 2 });
+		}
+		else {
+			state = static_cast<AnimationFlag>(act->id);
+		}
 	}
 	if (prevState != state) {
 		switch (state)
@@ -51,6 +64,7 @@ void WalkieGC::update(std::vector<msf::Action *>& acts, sf::RenderWindow & windo
 	}
 	animation.progress();
 	window.draw(animation);
+	window.draw(lbar);
 }
 
 std::unique_ptr < msf::GraphicsComponent > WalkieGC::clone() {

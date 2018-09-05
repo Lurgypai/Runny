@@ -26,4 +26,5 @@ private:
 	int currentId{2};
 	int middleId{1};
 	int lastId{0};
+	bool prevSpawn;
 };

@@ -11,7 +11,8 @@ public:
 		Stopped = 24,
 		RollRight = 25,
 		RollLeft = 26,
-		Dropping = 27
+		Dropping = 27,
+		Hbar = 40
 	};
 
 	WalkieGC(const Animation& animation);
@@ -23,5 +24,7 @@ public:
 private:
 	AnimationFlag state;
 	Animation animation;
+
+	sf::RectangleShape lbar;
 };
 

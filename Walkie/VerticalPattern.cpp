@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "VerticalPattern.h"
 #include "PlatformGC.h"
-#include "PlatformLC.h"
+#include "CollideableLC.h"
 
 VerticalPattern::VerticalPattern(msf::Scene * scene, int xMin, int xMax, int yMin, int yMax, int width, int heightMin, int heightMax) :
 	scene{scene},
@@ -38,12 +38,12 @@ sf::FloatRect VerticalPattern::generate(sf::FloatRect lastPlatBox) {
 
 	std::shared_ptr<msf::GameObject> lPlat = scene->addGObject("stage");
 	lPlat->setGraphics<PlatformGC>(width, height);
-	lPlat->setLogic<PlatformLC>(width, height);
+	lPlat->setLogic<CollideableLC>(width, height);
 	lPlat->setPos(x, y);
 
 	std::shared_ptr<msf::GameObject> rPlat = scene->addGObject("stage");
 	rPlat->setGraphics<PlatformGC>(width, height);
-	rPlat->setLogic<PlatformLC>(width, height);
+	rPlat->setLogic<CollideableLC>(width, height);
 	rPlat->setPos(x - xDistance, y - yDistance);
 
 	platforms.push_back(lPlat.get());

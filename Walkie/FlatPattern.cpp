@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "FlatPattern.h"
 #include "PlatformGC.h"
-#include "PlatformLC.h"
+#include "CollideableLC.h"
+#include "Resources.h"
 
 FlatPattern::FlatPattern(msf::Scene* scene, int xMin, int xMax, int yMin, int yMax, int widthMin, int widthMax, int heightMin, int heightMax, int countMin, int countMax) :
 	scene{scene},
@@ -42,8 +43,18 @@ sf::FloatRect FlatPattern::generate(sf::FloatRect lastPlatBox) {
 
 		std::shared_ptr<msf::GameObject> plat = scene->addGObject("stage");
 		plat->setGraphics<PlatformGC>(width, height);
-		plat->setLogic<PlatformLC>(width, height);
+		plat->setLogic<CollideableLC>(width, height);
 		plat->setPos(newX, newY);
+		
+		std::uniform_int_distribution dotDistr{ 0, 3};
+		bool spawnDots = dotDistr(gen) != 0;
+		if (spawnDots) {
+			int totalDots{ static_cast<int>(width) / 30 };
+			int offset = ((width / totalDots) / 2);
+			for (int dotNum{ 0 }; dotNum != totalDots; dotNum++) {
+				ResourceManager::getResource(Resources::dot)->init(*scene, { static_cast<int>(offset + newX + ((width / totalDots) * dotNum)), static_cast<int>(newY - 6) });
+			}
+		}
 
 		lastPlatBox = sf::FloatRect{ {newX, newY}, {width, height} };
 

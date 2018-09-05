@@ -1,0 +1,139 @@
+level
+plat:     x: -45     y: 20     w: 800     h: 10
+plat:     x: 745     y: 30     w: 10     h: 50
+plat:     x: 755     y: 70     w: 200     h: 10
+plat:     x: 945     y: 80     w: 10     h: 50
+plat:     x: 955     y: 120     w: 500     h: 10
+plat:     x: 1455     y: 120     w: 10     h: 50
+plat:     x: 1465     y: 160     w: 50     h: 10
+plat:     x: 1515     y: 120     w: 10     h: 50
+plat:     x: 1525     y: 120     w: 200     h: 10
+plat:     x: 1725     y: 120     w: 10     h: 50
+plat:     x: 1735     y: 160     w: 50     h: 10
+plat:     x: 1785     y: 120     w: 10     h: 50
+plat:     x: 1795     y: 120     w: 200     h: 10
+plat:     x: 2005     y: 160     w: 100     h: 10
+plat:     x: 1995     y: 120     w: 10     h: 50
+plat:     x: 2105     y: 120     w: 10     h: 50
+plat:     x: 2115     y: 120     w: 200     h: 10
+plat:     x: 2325     y: 160     w: 100     h: 10
+plat:     x: 2315     y: 120     w: 10     h: 50
+plat:     x: 2425     y: 120     w: 10     h: 50
+plat:     x: 2435     y: 120     w: 200     h: 10
+plat:     x: 2645     y: 160     w: 250     h: 10
+plat:     x: 2635     y: 120     w: 10     h: 50
+plat:     x: 2895     y: 120     w: 10     h: 50
+plat:     x: 2905     y: 120     w: 200     h: 10
+plat:     x: 3093     y: 49     w: 400     h: 10
+plat:     x: 3474     y: -69     w: 400     h: 10
+plat:     x: 3862     y: -164     w: 400     h: 10
+plat:     x: 4007     y: -282     w: 100     h: 10
+dot:      x: 50     y: 12
+dot:      x: 56     y: 12
+dot:      x: 62     y: 12
+dot:      x: 68     y: 12
+dot:      x: 74     y: 12
+dot:      x: 80     y: 12
+dot:      x: 86     y: 12
+dot:      x: 92     y: 12
+dot:      x: 98     y: 12
+dot:      x: 104     y: 12
+dot:      x: 110     y: 12
+dot:      x: 116     y: 12
+dot:      x: 122     y: 12
+dot:      x: 128     y: 12
+dot:      x: 134     y: 12
+dot:      x: 140     y: 12
+dot:      x: 146     y: 12
+dot:      x: 152     y: 12
+dot:      x: 158     y: 12
+dot:      x: 164     y: 12
+dot:      x: 170     y: 12
+dot:      x: 176     y: 12
+dot:      x: 918     y: 61
+dot:      x: 925     y: 61
+dot:      x: 932     y: 61
+dot:      x: 741     y: 9
+dot:      x: 734     y: 10
+dot:      x: 727     y: 10
+dot:      x: 1081     y: 112
+dot:      x: 1102     y: 112
+dot:      x: 1116     y: 112
+dot:      x: 1095     y: 112
+dot:      x: 1109     y: 112
+dot:      x: 1123     y: 112
+dot:      x: 1088     y: 112
+dot:      x: 1130     y: 112
+dot:      x: 1137     y: 112
+dot:      x: 1144     y: 112
+dot:      x: 1473     y: 94
+dot:      x: 1480     y: 94
+dot:      x: 1487     y: 94
+dot:      x: 1494     y: 94
+dot:      x: 1501     y: 94
+dot:      x: 1508     y: 94
+dot:      x: 1466     y: 94
+dot:      x: 1744     y: 87
+dot:      x: 1751     y: 87
+dot:      x: 1772     y: 87
+dot:      x: 1765     y: 87
+dot:      x: 1758     y: 87
+dot:      x: 2024     y: 86
+dot:      x: 2031     y: 86
+dot:      x: 2045     y: 86
+dot:      x: 2059     y: 86
+dot:      x: 2073     y: 86
+dot:      x: 2052     y: 86
+dot:      x: 2038     y: 86
+dot:      x: 2066     y: 86
+dot:      x: 2345     y: 90
+dot:      x: 2352     y: 90
+dot:      x: 2366     y: 90
+dot:      x: 2380     y: 90
+dot:      x: 2359     y: 90
+dot:      x: 2373     y: 90
+dot:      x: 2387     y: 90
+dot:      x: 3206     y: 41
+dot:      x: 3220     y: 41
+dot:      x: 3241     y: 41
+dot:      x: 3227     y: 41
+dot:      x: 3234     y: 41
+dot:      x: 3213     y: 41
+dot:      x: 3082     y: 101
+dot:      x: 3082     y: 95
+dot:      x: 3082     y: 89
+dot:      x: 3082     y: 83
+dot:      x: 3082     y: 77
+dot:      x: 3076     y: 77
+dot:      x: 3088     y: 77
+dot:      x: 3082     y: 71
+dot:      x: 3461     y: 23
+dot:      x: 3461     y: 16
+dot:      x: 3461     y: 10
+dot:      x: 3461     y: 4
+dot:      x: 3461     y: -2
+dot:      x: 3461     y: -8
+dot:      x: 3461     y: -14
+dot:      x: 3839     y: -95
+dot:      x: 3839     y: -102
+dot:      x: 3839     y: -109
+dot:      x: 3839     y: -116
+dot:      x: 3839     y: -123
+dot:      x: 3845     y: -123
+dot:      x: 3833     y: -123
+dot:      x: 3839     y: -130
+dot:      x: 4053     y: -208
+dot:      x: 4053     y: -215
+dot:      x: 4053     y: -222
+dot:      x: 4053     y: -229
+dot:      x: 4053     y: -236
+dot:      x: 4053     y: -243
+dot:      x: 4053     y: -250
+dot:      x: 4053     y: -257
+dot:      x: 4060     y: -257
+dot:      x: 4046     y: -257
+dot:      x: 4053     y: -264
+dot:      x: 4039     y: -250
+dot:      x: 4067     y: -250
+end:      x: 4051     y: -298
+check:      x: 2942     y: 108

@@ -3,8 +3,9 @@
 
 class PlayerCamera : public msf::Camera {
 public:
-	PlayerCamera(msf::GameObject* playerHandle_);
+	PlayerCamera();
 	PlayerCamera(const PlayerCamera& other);
+	void setPlayerHandle(msf::GameObject *playerHandle_);
 	void update() override;
 private:
 	msf::GameObject* playerHandle;

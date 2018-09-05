@@ -3,12 +3,18 @@
 #include "WalkieC.h"
 class WalkieLC : public msf::LogicComponent {
 public:
-	WalkieLC();
+	WalkieLC(msf::Game *window_);
 	WalkieLC(const WalkieLC& other);
 	~WalkieLC();
 
 	void update() override;
 	std::unique_ptr<msf::LogicComponent> clone() override;
+	void spawn();
+	void setVictor();
+	bool complete();
+	bool isSpawning();
+	bool isVictor();
+	sf::Vector2f getSpawnPoint();
 private:
 	enum ControllerState {
 		left = 1 << 0,
@@ -20,7 +26,9 @@ private:
 	enum PlayerState {
 		free,
 		dropping,
-		rolling
+		rolling,
+		spawning,
+		victory
 	};
 	//controller
 	WalkieC controller;
@@ -28,6 +36,8 @@ private:
 	//movement
 	msf::MVector velocity;
 	PlayerState state;
+	msf::Game *game;
+
 	bool onLWall;
 	bool onGround;
 	bool onRWall;
@@ -40,5 +50,13 @@ private:
 	const int maxJumps;
 	const int dropDelayMax;
 	float speed;
+	int life;
+
+	int spawnFrame;
+	bool levelComplete;
+	int fallDeathDelay;
+	int fallDeathDelayMax;
+
+	sf::Vector2f respawnPos;
 };
 

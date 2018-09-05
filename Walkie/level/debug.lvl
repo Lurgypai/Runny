@@ -1,0 +1,11 @@
+level
+end:      x: -101     y: -149
+plat:     x: -145     y: -135     w: 100     h: 10
+plat:     x: 325     y: -493     w: 10     h: 480
+plat:     x: 271     y: -517     w: 10     h: 480
+plat:     x: -145     y: -45     w: 10     h: 70
+plat:     x: -145     y: -125     w: 10     h: 70
+plat:     x: -145     y: -55     w: 100     h: 10
+plat:     x: -45     y: -55     w: 100     h: 10
+plat:     x: -145     y: 25     w: 1000     h: 10
+plat:     x: 338     y: -498     w: 10     h: 500

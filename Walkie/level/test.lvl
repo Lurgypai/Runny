@@ -1,0 +1,18 @@
+level
+dot:      x: -23     y: 6
+dot:      x: -11     y: 6
+dot:      x: 2     y: 6
+dot:      x: 17     y: 6
+dot:      x: 366     y: -47
+dot:      x: 380     y: -47
+dot:      x: 395     y: -47
+dot:      x: 409     y: -47
+end:      x: 927     y: -291
+check:      x: 287     y: 4
+plat:     x: -48     y: 19     w: 100     h: 10
+plat:     x: 78     y: 19     w: 100     h: 10
+plat:     x: 204     y: 19     w: 100     h: 10
+plat:     x: 308     y: -32     w: 200     h: 10
+plat:     x: 529     y: -87     w: 200     h: 10
+plat:     x: 729     y: -277     w: 10     h: 200
+plat:     x: 739     y: -277     w: 200     h: 10
